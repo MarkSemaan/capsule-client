@@ -2,8 +2,8 @@ import LandingPage from "../pages/landing/LandingPage";
 
 export function meta() {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Time Capsule" },
+    { name: "description", content: "Time Capsule" },
   ];
 }
 

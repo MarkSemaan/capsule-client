@@ -1,4 +1,5 @@
 :root {
   background-color: #bbdefb;
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
 }

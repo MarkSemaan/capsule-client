@@ -16,7 +16,6 @@ const LandingPage = (props: Props) => {
             <Link to="/">Time Capsule</Link>
           </div>
           <div>
-            <Link to="/about">About</Link>
             <Link to="/signup" className={styles.signup}>
               Sign Up
             </Link>

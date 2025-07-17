@@ -31,13 +31,21 @@
   height: 50vh;
 }
 
-.hero p {
+.hero h1 {
+  font-size: 2rem;
+  margin: 0;
   text-align: center;
-  color: white;
-  margin-top: 0.5rem;
+}
+
+.hero p {
+  font-size: 1.25rem;
+  text-align: center;
+  color: #666;
+  margin: 0.5rem 0 1rem 0;
 }
 
 .getStarted {
+  font-size: 1rem;
   background-color: #fff;
   color: #000;
   padding: 0.5rem 1rem;
@@ -46,6 +54,7 @@
   outline: none;
   cursor: pointer;
   font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .getStarted a {
   text-decoration: none;
@@ -99,4 +108,84 @@
   object-fit: contain;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 768px) {
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .navbar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    margin-bottom: 3rem;
+    width: 100%;
+  }
+
+  .navbar .title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
+
+  .navbar .signup {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 2rem;
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    height: auto;
+    margin: 3rem 0;
+    width: 100%;
+  }
+
+  .hero h1 {
+    font-size: 1.75rem;
+    margin: 0;
+    font-weight: bold;
+    line-height: 1.2;
+  }
+
+  .hero p {
+    font-size: 1rem;
+    margin: 0.5rem 0 1.5rem 0;
+    color: #666;
+    line-height: 1.4;
+  }
+
+  .getStarted {
+    font-size: 0.9rem;
+    padding: 0.75rem 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 2rem;
+  }
+
+  .featuresContainer {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    margin: 1rem;
+    font-size: 0.8rem;
+    width: 100%;
+  }
 }
