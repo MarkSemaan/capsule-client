@@ -29,7 +29,7 @@ const LandingPage = (props: Props) => {
         </div>
         <div>
           <button className={styles.getStarted}>
-            <Link to="/signup">Get Started</Link>
+            <Link to="/dashboard">Get Started</Link>
           </button>
         </div>
       </section>
