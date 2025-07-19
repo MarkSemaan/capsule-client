@@ -11,7 +11,6 @@ interface CapsuleData {
   title: string;
   message: string;
   dateTime: string;
-  status: "private" | "public";
   tags: string[];
   location: string;
   surpriseMode: boolean;
@@ -22,7 +21,6 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
     title: "",
     message: "",
     dateTime: "",
-    status: "private",
     tags: [] as string[],
     location: "",
     surpriseMode: false,
@@ -64,7 +62,6 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
       title: "",
       message: "",
       dateTime: "",
-      status: "private",
       tags: [] as string[],
       location: "",
       surpriseMode: false,
@@ -190,49 +187,6 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
                 onChange={(e) => handleInputChange("dateTime", e.target.value)}
                 placeholder="Select date and time"
               />
-            </div>
-          </div>
-
-          <div className={styles.inputSection}>
-            <div className={styles.inputWrapper}>
-              <svg
-                className={styles.inputIcon}
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <rect
-                  x="3"
-                  y="11"
-                  width="18"
-                  height="11"
-                  rx="2"
-                  ry="2"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <circle
-                  cx="12"
-                  cy="16"
-                  r="1"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <path
-                  d="M7 11V7a5 5 0 0 1 10 0v4"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-              </svg>
-              <select
-                className={styles.input}
-                value={formData.status}
-                onChange={(e) => handleInputChange("status", e.target.value)}
-              >
-                <option value="private">Status: Private</option>
-                <option value="public">Status: Public</option>
-              </select>
             </div>
           </div>
 
