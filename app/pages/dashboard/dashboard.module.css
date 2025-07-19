@@ -6,5 +6,143 @@
 
 .mainContent {
   flex: 1;
+  margin-left: 250px;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0;
+}
+
+.topBarRight {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.createButton {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #e0e0e0;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.createButton:hover {
+  background-color: #f5f5f5;
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #666666;
+  cursor: pointer;
+}
+
+.dropdownArrow {
+  font-size: 12px;
+}
+
+.capsuleGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+  .mainContent {
+    margin-left: 200px;
+    padding: 16px;
+  }
+
+  .capsuleGrid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .topBarRight {
+    gap: 16px;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .mainContent {
+    margin-left: 0;
+    padding: 12px;
+  }
+
+  .topBar {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .topBarRight {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .capsuleGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .createButton {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+  .mainContent {
+    padding: 8px;
+  }
+
+  .capsuleGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .topBarRight {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .createButton {
+    width: 100%;
+  }
 }

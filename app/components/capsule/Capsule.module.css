@@ -101,3 +101,86 @@
 .calendarIcon {
   font-size: 14px;
 }
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+  .capsule {
+    width: 220px;
+    height: 220px;
+    padding: 14px;
+  }
+
+  .title {
+    font-size: 15px;
+  }
+
+  .content p {
+    font-size: 15px;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .capsule {
+    width: 200px;
+    height: 200px;
+    padding: 12px;
+  }
+
+  .header {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+
+  .username {
+    font-size: 13px;
+  }
+
+  .content p {
+    font-size: 14px;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+
+  .date {
+    font-size: 11px;
+  }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+  .capsule {
+    width: 100%;
+    height: auto;
+    min-height: 180px;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .title {
+    font-size: 13px;
+  }
+
+  .username {
+    font-size: 12px;
+  }
+
+  .content p {
+    font-size: 13px;
+  }
+}
