@@ -6,22 +6,24 @@ type Props = {};
 
 const sidebar = (props: Props) => {
   return (
-    <nav className={styles.sidebar}>
-      <div className={styles.sidebarProfile}>
-        <div className={styles.profilePicture}></div>
-        <h2>Username</h2>
-      </div>
-      <div className={styles.sidebarNav}>
-        <Link to="/dashboard/all-capsules" className={styles.active}>
-          All Capsules
-        </Link>
-        <Link to="/dashboard/my-capsules">My Capsules</Link>
-        <Link to="/dashboard/settings">Settings</Link>
-      </div>
-      <div className={styles.sidebarFooter}>
-        <button className={styles.logoutButton}>Log Out</button>
-      </div>
-    </nav>
+    <div className={styles.sidebarContainer}>
+      <nav className={styles.sidebar}>
+        <div className={styles.sidebarProfile}>
+          <div className={styles.profilePicture}></div>
+          <h2>Username</h2>
+        </div>
+        <div className={styles.sidebarNav}>
+          <Link to="/dashboard/all-capsules" className={styles.active}>
+            All Capsules
+          </Link>
+          <Link to="/dashboard/my-capsules">My Capsules</Link>
+          <Link to="/dashboard/settings">Settings</Link>
+        </div>
+        <div className={styles.sidebarFooter}>
+          <button className={styles.logoutButton}>Log Out</button>
+        </div>
+      </nav>
+    </div>
   );
 };
 
