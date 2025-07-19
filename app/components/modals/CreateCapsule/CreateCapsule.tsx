@@ -59,11 +59,25 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
     }));
   };
 
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      message: "",
+      dateTime: "",
+      status: "private",
+      tags: [] as string[],
+      location: "",
+      surpriseMode: false,
+    });
+    setTagInput("");
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (onSubmit) {
       onSubmit(formData as CapsuleData);
     }
+    resetForm();
     onClose();
   };
 
