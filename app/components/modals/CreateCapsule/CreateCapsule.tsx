@@ -17,11 +17,11 @@ interface CapsuleData {
 }
 
 const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
-  const [formData, setFormData] = useState<CapsuleData>({
+  const [formData, setFormData] = useState({
     message: "",
     dateTime: "",
     status: "private",
-    tags: [],
+    tags: [] as string[],
     location: "",
     surpriseMode: false,
   });
@@ -30,7 +30,7 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
 
   if (!isOpen) return null;
 
-  const handleInputChange = (field: keyof CapsuleData, value: any) => {
+  const handleInputChange = (field: keyof CapsuleData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -57,7 +57,7 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (onSubmit) {
-      onSubmit(formData);
+      onSubmit(formData as CapsuleData);
     }
     onClose();
   };
@@ -284,7 +284,7 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
                 className={styles.toggleInput}
                 checked={formData.surpriseMode}
                 onChange={(e) =>
-                  handleInputChange("surpriseMode", e.target.checked)
+                  handleInputChange("surpriseMode", e.target.checked.toString())
                 }
               />
               <span className={styles.toggleSlider}></span>
