@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "../../components/layout/sidebar/sidebar";
 import Capsule from "../../components/capsule/Capsule";
 import styles from "./dashboard.module.css";
+import CreateCapsule from "../../components/modals/CreateCapsule/CreateCapsule";
 
 const Dashboard = () => {
+  const [isCreateCapsuleModalOpen, setIsCreateCapsuleModalOpen] =
+    useState(false);
+
   return (
     <div className={styles.dashboard}>
       <Sidebar />
@@ -11,7 +15,12 @@ const Dashboard = () => {
         <div className={styles.topBar}>
           <h1 className={styles.title}>Capsule Wall</h1>
           <div className={styles.topBarRight}>
-            <button className={styles.createButton}>Create Capsule</button>
+            <button
+              className={styles.createButton}
+              onClick={() => setIsCreateCapsuleModalOpen(true)}
+            >
+              Create Capsule
+            </button>
             <div className={styles.filter}>
               <span>Filter</span>
               <span className={styles.dropdownArrow}>▼</span>
@@ -69,6 +78,10 @@ const Dashboard = () => {
           />
         </div>
       </main>
+      <CreateCapsule
+        isOpen={isCreateCapsuleModalOpen}
+        onClose={() => setIsCreateCapsuleModalOpen(false)}
+      />
     </div>
   );
 };

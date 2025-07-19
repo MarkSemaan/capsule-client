@@ -17,7 +17,6 @@ const Sidebar = (props: Props) => {
             All Capsules
           </Link>
           <Link to="/dashboard/my-capsules">My Capsules</Link>
-          <Link to="/dashboard/settings">Settings</Link>
         </div>
         <div className={styles.sidebarFooter}>
           <button className={styles.logoutButton}>Log Out</button>
