@@ -8,6 +8,7 @@ type Props = {
   content: string;
   tag: string;
   date: Date;
+  reveal_date: Date;
   isRevealed?: boolean;
 };
 

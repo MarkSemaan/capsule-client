@@ -28,6 +28,7 @@ const Dashboard = () => {
             content="SE Factory is a great place to learn! Nothing wrong with the program at all!"
             tag="SE Factory"
             date={new Date()}
+            reveal_date={new Date()}
             isRevealed={true}
           />
           <Capsule
@@ -37,6 +38,7 @@ const Dashboard = () => {
             content="React is amazing! Building components is so much fun."
             tag="Programming"
             date={new Date()}
+            reveal_date={new Date()}
             isRevealed={true}
           />
 
@@ -48,6 +50,7 @@ const Dashboard = () => {
             content="This is a hidden capsule that needs to be revealed."
             tag="Personal"
             date={new Date()}
+            reveal_date={new Date()}
             isRevealed={false}
           />
           <Capsule
@@ -57,6 +60,7 @@ const Dashboard = () => {
             content="These are my private thoughts and feelings."
             tag="Private"
             date={new Date()}
+            reveal_date={new Date()}
             isRevealed={false}
           />
         </div>
