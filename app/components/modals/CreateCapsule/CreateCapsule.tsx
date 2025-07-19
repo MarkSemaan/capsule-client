@@ -30,7 +30,10 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
 
   if (!isOpen) return null;
 
-  const handleInputChange = (field: keyof CapsuleData, value: string) => {
+  const handleInputChange = (
+    field: keyof CapsuleData,
+    value: string | boolean
+  ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -284,7 +287,7 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
                 className={styles.toggleInput}
                 checked={formData.surpriseMode}
                 onChange={(e) =>
-                  handleInputChange("surpriseMode", e.target.checked.toString())
+                  handleInputChange("surpriseMode", e.target.checked)
                 }
               />
               <span className={styles.toggleSlider}></span>
