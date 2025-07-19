@@ -30,6 +30,7 @@ const Dashboard = () => {
             date={new Date()}
             reveal_date={new Date()}
             isRevealed={true}
+            location="SE Factory"
           />
           <Capsule
             title="Learning React"
@@ -40,6 +41,7 @@ const Dashboard = () => {
             date={new Date()}
             reveal_date={new Date()}
             isRevealed={true}
+            location="SE Factory"
           />
 
           {/* Hidden */}
@@ -52,6 +54,7 @@ const Dashboard = () => {
             date={new Date()}
             reveal_date={new Date()}
             isRevealed={false}
+            location="SE Factory"
           />
           <Capsule
             title="Private notes"
@@ -62,6 +65,7 @@ const Dashboard = () => {
             date={new Date()}
             reveal_date={new Date()}
             isRevealed={false}
+            location="SE Factory"
           />
         </div>
       </main>

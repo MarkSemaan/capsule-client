@@ -9,6 +9,7 @@ type Props = {
   tag: string;
   date: Date;
   reveal_date: Date;
+  location: string;
   isRevealed?: boolean;
 };
 
@@ -48,6 +49,10 @@ const Capsule = (props: Props) => {
           <div className={styles.date}>
             <span className={styles.calendarIcon}>📅</span>
             <span>{props.date.toLocaleDateString()}</span>
+          </div>
+          <div className={styles.location}>
+            <span className={styles.locationIcon}>📍</span>
+            <span>{props.location}</span>
           </div>
         </div>
       </div>
