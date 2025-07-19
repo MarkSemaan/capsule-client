@@ -1,7 +1,13 @@
 import React from "react";
 import styles from "./Capsule.module.css";
 
-type Props = {};
+type Props = {
+  title: string;
+  username: string;
+  content: string;
+  tag: string;
+  date: string;
+};
 
 const Capsule = (props: Props) => {
   return (
@@ -10,20 +16,20 @@ const Capsule = (props: Props) => {
         <div className={styles.header}>
           <div className={styles.avatar}></div>
           <div className={styles.userInfo}>
-            <h3 className={styles.title}>Title</h3>
-            <p className={styles.username}>Username</p>
+            <h3 className={styles.title}>{props.title}</h3>
+            <p className={styles.username}>{props.username}</p>
           </div>
         </div>
 
         <div className={styles.content}>
-          <p>This is a sample capsule, hello world!</p>
+          <p>{props.content}</p>
         </div>
 
         <div className={styles.footer}>
-          <span className={styles.tag}>Tag</span>
+          <span className={styles.tag}>{props.tag}</span>
           <div className={styles.date}>
             <span className={styles.calendarIcon}>📅</span>
-            <span>Month, Day, Year</span>
+            <span>{props.date}</span>
           </div>
         </div>
       </div>

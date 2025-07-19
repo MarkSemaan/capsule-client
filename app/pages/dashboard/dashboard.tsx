@@ -8,7 +8,13 @@ const Dashboard = () => {
     <div className={styles.dashboard}>
       <Sidebar />
       <main className={styles.mainContent}>
-        <Capsule />
+        <Capsule
+          title="Stress overload"
+          username="Mark"
+          content="I'm so stressed out, I don't know what to do."
+          tag="Stress"
+          date="July 19, 2025"
+        />
       </main>
     </div>
   );

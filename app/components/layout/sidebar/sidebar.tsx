@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 type Props = {};
 
-const sidebar = (props: Props) => {
+const Sidebar = (props: Props) => {
   return (
     <div className={styles.sidebarContainer}>
       <nav className={styles.sidebar}>
@@ -27,4 +27,4 @@ const sidebar = (props: Props) => {
   );
 };
 
-export default sidebar;
+export default Sidebar;
