@@ -8,6 +8,7 @@ interface CreateCapsuleProps {
 }
 
 interface CapsuleData {
+  title: string;
   message: string;
   dateTime: string;
   status: "private" | "public";
@@ -18,6 +19,7 @@ interface CapsuleData {
 
 const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
   const [formData, setFormData] = useState({
+    title: "",
     message: "",
     dateTime: "",
     status: "private",
