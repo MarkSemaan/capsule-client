@@ -13,7 +13,6 @@ interface CapsuleData {
   dateTime: string;
   tags: string[];
   location: string;
-  surpriseMode: boolean;
 }
 
 const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
@@ -23,7 +22,6 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
     dateTime: "",
     tags: [] as string[],
     location: "",
-    surpriseMode: false,
   });
 
   const [tagInput, setTagInput] = useState("");
@@ -64,7 +62,6 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
       dateTime: "",
       tags: [] as string[],
       location: "",
-      surpriseMode: false,
     });
     setTagInput("");
   };
@@ -270,26 +267,6 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
                 onChange={(e) => handleInputChange("location", e.target.value)}
               />
             </div>
-          </div>
-
-          <div className={styles.surpriseSection}>
-            <div className={styles.surpriseInfo}>
-              <h3 className={styles.surpriseTitle}>Surprise Mode</h3>
-              <p className={styles.surpriseDescription}>
-                Keep this capsule hidden even to yourself
-              </p>
-            </div>
-            <label className={styles.toggleWrapper}>
-              <input
-                type="checkbox"
-                className={styles.toggleInput}
-                checked={formData.surpriseMode}
-                onChange={(e) =>
-                  handleInputChange("surpriseMode", e.target.checked)
-                }
-              />
-              <span className={styles.toggleSlider}></span>
-            </label>
           </div>
 
           <button type="submit" className={styles.createButton}>
