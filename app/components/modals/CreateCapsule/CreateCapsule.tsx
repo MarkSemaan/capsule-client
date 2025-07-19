@@ -86,6 +86,34 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
         </div>
 
         <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.inputSection}>
+            <label className={styles.inputLabel}>Title</label>
+            <div className={styles.inputWrapper}>
+              <svg
+                className={styles.inputIcon}
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M4 6h16M4 12h16M4 18h12"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <input
+                type="text"
+                className={styles.input}
+                placeholder="Enter capsule title"
+                value={formData.title}
+                onChange={(e) => handleInputChange("title", e.target.value)}
+              />
+            </div>
+          </div>
+
           <div className={styles.messageSection}>
             <textarea
               className={styles.messageInput}
