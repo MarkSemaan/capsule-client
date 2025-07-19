@@ -16,11 +16,7 @@ interface CapsuleData {
   surpriseMode: boolean;
 }
 
-const CreateCapsule: React.FC<CreateCapsuleProps> = ({
-  isOpen,
-  onClose,
-  onSubmit,
-}) => {
+const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
   const [formData, setFormData] = useState<CapsuleData>({
     message: "",
     dateTime: "",
