@@ -7,11 +7,47 @@
   display: flex;
   flex-direction: column;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 .capsule:hover {
   transform: scale(1.05);
   transition: transform 0.2s ease-in-out;
+}
+
+.capsule.hidden {
+  background-color: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.capsule.hidden:hover {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
+  transform: scale(1.02);
+}
+
+.hiddenContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.hiddenIcon {
+  font-size: 32px;
+  opacity: 0.6;
+}
+
+.hiddenContent p {
+  font-size: 14px;
+  color: #6c757d;
+  margin: 0;
+  font-weight: 500;
 }
 
 .capsuleContainer {

@@ -20,17 +20,45 @@ const Dashboard = () => {
         </div>
 
         <div className={styles.capsuleGrid}>
-          {Array.from({ length: 20 }, (_, index) => (
-            <Capsule
-              key={index}
-              title="Title"
-              avatar="https://placehold.co/600x400"
-              username="Username"
-              content="This is a sample capsule, hello world!"
-              tag="Tag"
-              date={new Date()}
-            />
-          ))}
+          {/* Revealed */}
+          <Capsule
+            title="Doing great!"
+            avatar="https://placehold.co/600x400"
+            username="Mark"
+            content="SE Factory is a great place to learn! Nothing wrong with the program at all!"
+            tag="SE Factory"
+            date={new Date()}
+            isRevealed={true}
+          />
+          <Capsule
+            title="Learning React"
+            avatar="https://placehold.co/600x400"
+            username="Sarah"
+            content="React is amazing! Building components is so much fun."
+            tag="Programming"
+            date={new Date()}
+            isRevealed={true}
+          />
+
+          {/* Hidden */}
+          <Capsule
+            title="Secret thoughts"
+            avatar="https://placehold.co/600x400"
+            username="Alex"
+            content="This is a hidden capsule that needs to be revealed."
+            tag="Personal"
+            date={new Date()}
+            isRevealed={false}
+          />
+          <Capsule
+            title="Private notes"
+            avatar="https://placehold.co/600x400"
+            username="Emma"
+            content="These are my private thoughts and feelings."
+            tag="Private"
+            date={new Date()}
+            isRevealed={false}
+          />
         </div>
       </main>
     </div>

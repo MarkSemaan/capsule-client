@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Capsule.module.css";
 
 type Props = {
@@ -8,9 +8,23 @@ type Props = {
   content: string;
   tag: string;
   date: Date;
+  isRevealed?: boolean;
 };
 
 const Capsule = (props: Props) => {
+  if (!props.isRevealed) {
+    return (
+      <div className={styles.capsuleContainer}>
+        <div className={`${styles.capsule} ${styles.hidden}`}>
+          <div className={styles.hiddenContent}>
+            <div className={styles.hiddenIcon}>🔒</div>
+            <p>Locked</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.capsuleContainer}>
       <div className={styles.capsule}>
