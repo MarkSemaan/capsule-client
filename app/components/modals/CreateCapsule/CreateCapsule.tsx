@@ -1,127 +1,52 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./CreateCapsule.module.css";
+import { useCapsuleForm } from "../../../hooks/useCapsuleForm";
+import { useModal } from "../../../hooks/useModal";
+import { useFileUpload } from "../../../hooks/useFileUpload";
 
 interface CreateCapsuleProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit?: (capsuleData: CapsuleData) => void;
-}
-
-interface CapsuleData {
-  title: string;
-  message: string;
-  dateTime: string;
-  tags: string[];
-  location: string;
+  onSubmit?: (capsuleData: any) => void;
 }
 
 const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
-  const [formData, setFormData] = useState({
-    title: "",
-    message: "",
-    dateTime: "",
-    tags: [] as string[],
-    location: "",
+  const {
+    formData,
+    tagInput,
+    setTagInput,
+    handleInputChange,
+    handleTagInputKeyDown,
+    removeTag,
+    resetForm,
+  } = useCapsuleForm();
+
+  const { handleSubmit, handleBackClick } = useModal({
+    isOpen,
+    onClose,
+    onSubmit,
   });
 
-  const [tagInput, setTagInput] = useState("");
+  const { handleAudioUpload, handleImageUpload } = useFileUpload({
+    onMediaTypeChange: (type) => handleInputChange("mediaType", type),
+  });
 
   if (!isOpen) return null;
-
-  const handleInputChange = (
-    field: keyof CapsuleData,
-    value: string | boolean
-  ) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleTagInputKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && tagInput.trim()) {
-      e.preventDefault();
-      if (!formData.tags.includes(tagInput.trim())) {
-        setFormData((prev) => ({
-          ...prev,
-          tags: [...prev.tags, tagInput.trim()],
-        }));
-      }
-      setTagInput("");
-    }
-  };
-
-  const removeTag = (tagToRemove: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      tags: prev.tags.filter((tag) => tag !== tagToRemove),
-    }));
-  };
-
-  const resetForm = () => {
-    setFormData({
-      title: "",
-      message: "",
-      dateTime: "",
-      tags: [] as string[],
-      location: "",
-    });
-    setTagInput("");
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (onSubmit) {
-      onSubmit(formData as CapsuleData);
-    }
-    resetForm();
-    onClose();
-  };
 
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
         <div className={styles.header}>
-          <button onClick={onClose} className={styles.backButton}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M15 18L9 12L15 6"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+          <button onClick={handleBackClick} className={styles.backButton}>
+            ←
           </button>
           <h2 className={styles.title}>Create Capsule</h2>
         </div>
 
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.inputSection}>
-            <label className={styles.inputLabel}>Title</label>
-            <div className={styles.inputWrapper}>
-              <svg
-                className={styles.inputIcon}
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h12"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <input
-                type="text"
-                className={styles.input}
-                placeholder="Enter capsule title"
-                value={formData.title}
-                onChange={(e) => handleInputChange("title", e.target.value)}
-              />
-            </div>
-          </div>
-
+        <form
+          onSubmit={(e) => handleSubmit(e, formData, resetForm)}
+          className={styles.form}
+        >
           <div className={styles.messageSection}>
             <textarea
               className={styles.messageInput}
@@ -132,51 +57,38 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
             />
           </div>
 
+          <div className={styles.mediaButtons}>
+            <label
+              className={`${styles.mediaButton} ${
+                formData.mediaType === "audio" ? styles.active : ""
+              }`}
+            >
+              <input
+                type="file"
+                accept="audio/*"
+                onChange={handleAudioUpload}
+                style={{ display: "none" }}
+              />
+              🎤 Audio
+            </label>
+            <label
+              className={`${styles.mediaButton} ${
+                formData.mediaType === "image" ? styles.active : ""
+              }`}
+            >
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                style={{ display: "none" }}
+              />
+              📷 Image
+            </label>
+          </div>
+
           <div className={styles.inputSection}>
-            <label className={styles.inputLabel}>Reveal Date</label>
             <div className={styles.inputWrapper}>
-              <svg
-                className={styles.inputIcon}
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <rect
-                  x="3"
-                  y="4"
-                  width="18"
-                  height="18"
-                  rx="2"
-                  ry="2"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <line
-                  x1="16"
-                  y1="2"
-                  x2="16"
-                  y2="6"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <line
-                  x1="8"
-                  y1="2"
-                  x2="8"
-                  y2="6"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <line
-                  x1="3"
-                  y1="10"
-                  x2="21"
-                  y2="10"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-              </svg>
+              📅
               <input
                 type="datetime-local"
                 className={styles.input}
@@ -184,32 +96,27 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
                 onChange={(e) => handleInputChange("dateTime", e.target.value)}
                 placeholder="Select date and time"
               />
+              ▼
             </div>
           </div>
 
           <div className={styles.inputSection}>
             <div className={styles.inputWrapper}>
-              <svg
-                className={styles.inputIcon}
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
+              🔒
+              <select
+                className={styles.input}
+                value={formData.privacy}
+                onChange={(e) => handleInputChange("privacy", e.target.value)}
               >
-                <path
-                  d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <line
-                  x1="7"
-                  y1="7"
-                  x2="7.01"
-                  y2="7"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-              </svg>
+                <option value="Private">Status: Private</option>
+                <option value="Public">Status: Public</option>
+                <option value="Unlisted">Status: Unlisted</option>
+              </select>
+            </div>
+          </div>
+
+          <div className={styles.inputSection}>
+            <div className={styles.inputWrapper}>
               <input
                 type="text"
                 className={styles.input}
@@ -221,7 +128,7 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
             </div>
             {formData.tags.length > 0 && (
               <div className={styles.tagsContainer}>
-                {formData.tags.map((tag, index) => (
+                {formData.tags.map((tag: string, index: number) => (
                   <span key={index} className={styles.tag}>
                     {tag}
                     <button
@@ -237,35 +144,24 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
             )}
           </div>
 
-          <div className={styles.inputSection}>
-            <div className={styles.inputWrapper}>
-              <svg
-                className={styles.inputIcon}
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <path
-                  d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"
-                  stroke="currentColor"
-                  strokeWidth="2"
+          <div className={styles.surpriseModeSection}>
+            <div className={styles.surpriseModeContent}>
+              <div>
+                <h3 className={styles.surpriseModeTitle}>Surprise Mode</h3>
+                <p className={styles.surpriseModeDescription}>
+                  Keep this capsule hidden even to yourself
+                </p>
+              </div>
+              <label className={styles.toggleSwitch}>
+                <input
+                  type="checkbox"
+                  checked={formData.surpriseMode}
+                  onChange={(e) =>
+                    handleInputChange("surpriseMode", e.target.checked)
+                  }
                 />
-                <circle
-                  cx="12"
-                  cy="10"
-                  r="3"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-              </svg>
-              <input
-                type="text"
-                className={styles.input}
-                placeholder="Location"
-                value={formData.location}
-                onChange={(e) => handleInputChange("location", e.target.value)}
-              />
+                <span className={styles.slider}></span>
+              </label>
             </div>
           </div>
 

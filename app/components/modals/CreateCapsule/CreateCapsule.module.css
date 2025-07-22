@@ -4,41 +4,38 @@
   left: 0;
   right: 0;
   bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   z-index: 1000;
-  padding: 20px;
 }
 
 .modal {
-  background-color: #42a5f5;
-  border-radius: 16px;
-  padding: 24px;
-  width: 100%;
+  background: #42a5f5;
+  border-radius: 20px;
+  padding: 30px;
+  width: 90%;
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 30px;
 }
 
 .backButton {
   background: none;
   border: none;
-  color: #ffffff;
+  color: #000;
   cursor: pointer;
   padding: 8px;
   border-radius: 8px;
+  margin-right: 15px;
   transition: background-color 0.2s;
 }
 
@@ -47,12 +44,10 @@
 }
 
 .title {
-  color: #000000;
-  font-size: 20px;
-  font-weight: 700;
+  color: #000;
+  font-size: 24px;
+  font-weight: bold;
   margin: 0;
-  flex: 1;
-  text-align: center;
 }
 
 .form {
@@ -62,101 +57,136 @@
 }
 
 .messageSection {
-  margin-bottom: 8px;
+  margin-bottom: 20px;
 }
 
 .messageInput {
   width: 100%;
-  background-color: #ffffff;
+  min-height: 120px;
+  padding: 15px;
   border: none;
   border-radius: 12px;
-  padding: 16px;
+  background: white;
   font-size: 16px;
   resize: vertical;
-  min-height: 120px;
   font-family: inherit;
   box-sizing: border-box;
 }
 
-.messageInput:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+.messageInput::placeholder {
+  color: #666;
 }
 
-.messageInput::placeholder {
-  color: #9ca3af;
+.mediaButtons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.mediaButton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 15px 10px;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.mediaButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mediaButton.active {
+  background: #667eea;
+  color: white;
 }
 
 .inputSection {
-  margin-bottom: 8px;
-}
-
-.inputLabel {
-  display: block;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 8px;
+  margin-bottom: 15px;
 }
 
 .inputWrapper {
   position: relative;
   display: flex;
   align-items: center;
-  background-color: #ffffff;
+  background: white;
   border-radius: 12px;
-  padding: 0 16px;
+  padding: 0 15px;
+  z-index: 5;
 }
 
 .inputIcon {
-  color: #6b7280;
+  color: #666;
   margin-right: 12px;
   flex-shrink: 0;
 }
 
 .input {
   flex: 1;
-  background: none;
+  padding: 15px 0;
   border: none;
-  padding: 16px 0;
+  background: transparent;
   font-size: 16px;
-  color: #374151;
-  width: 100%;
-}
-
-.input:focus {
+  color: #333;
   outline: none;
 }
 
+.input select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: transparent;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+  z-index: 10;
+}
+
 .input::placeholder {
-  color: #9ca3af;
+  color: #666;
+}
+
+.dropdownIcon {
+  color: #666;
+  margin-left: 12px;
+  flex-shrink: 0;
 }
 
 .tagsContainer {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 .tag {
-  background-color: #3b82f6;
-  color: #ffffff;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 14px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  font-size: 14px;
+  color: #333;
 }
 
 .tagRemove {
   background: none;
   border: none;
-  color: #ffffff;
+  color: #666;
   cursor: pointer;
   font-size: 16px;
-  font-weight: bold;
   padding: 0;
   width: 16px;
   height: 16px;
@@ -168,35 +198,99 @@
 }
 
 .tagRemove:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.surpriseModeSection {
+  margin-bottom: 20px;
+}
+
+.surpriseModeContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.surpriseModeTitle {
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.surpriseModeDescription {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+.toggleSwitch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.toggleSwitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #667eea;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
 }
 
 .createButton {
-  background-color: #ffffff;
-  color: #000000;
+  width: 100%;
+  padding: 18px;
+  background: white;
   border: none;
   border-radius: 12px;
-  padding: 16px 24px;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
+  color: #333;
   cursor: pointer;
   transition: all 0.2s;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .createButton:hover {
-  background-color: #3b82f6;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .createButton:active {
   transform: translateY(0);
-}
-
-/* Responsive adjustments */
-@media (max-width: 640px) {
-  .modal {
-    margin: 10px;
-    padding: 20px;
-  }
 }
