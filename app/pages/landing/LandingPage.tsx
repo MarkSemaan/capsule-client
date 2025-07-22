@@ -5,11 +5,21 @@ import badgePlus from "./badge-plus.svg";
 import badgeShare from "./share.svg";
 import badgeExplore from "./telescope.svg";
 import Register from "../../components/modals/auth/Register/Register";
+import Login from "../../components/modals/auth/Login/Login";
 
 type Props = {};
 
 const LandingPage = (props: Props) => {
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  const handleSwitchToLogin = () => {
+    setIsLoginModalOpen(true);
+  };
+
+  const handleSwitchToRegister = () => {
+    setIsRegisterModalOpen(true);
+  };
 
   return (
     <main>
@@ -65,6 +75,12 @@ const LandingPage = (props: Props) => {
       <Register
         isOpen={isRegisterModalOpen}
         onClose={() => setIsRegisterModalOpen(false)}
+        onSwitchToLogin={handleSwitchToLogin}
+      />
+      <Login
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        onSwitchToRegister={handleSwitchToRegister}
       />
     </main>
   );

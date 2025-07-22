@@ -4,9 +4,10 @@ import styles from "./Login.module.css";
 interface loginProps {
   isOpen: boolean;
   onClose: () => void;
+  onSwitchToRegister?: () => void;
 }
 
-const Login = ({ isOpen, onClose }: loginProps) => {
+const Login = ({ isOpen, onClose, onSwitchToRegister }: loginProps) => {
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -33,18 +34,46 @@ const Login = ({ isOpen, onClose }: loginProps) => {
     }
   };
 
+  const handleSwitchToRegister = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onClose();
+    if (onSwitchToRegister) {
+      onSwitchToRegister();
+    }
+  };
+
   return (
     <div className={styles.modalOverlay} onClick={handleOverlayClick}>
       <div className={styles.modal}>
-        <h3 className={styles.title}>Welcome Back!</h3>
+        <div className={styles.header}>
+          <div className={styles.icon}>👤</div>
+          <h3 className={styles.title}>Welcome Back!</h3>
+          {onSwitchToRegister && (
+            <p className={styles.subtitle}>
+              Don't have an account?{" "}
+              <button
+                className={styles.registerLink}
+                onClick={handleSwitchToRegister}
+              >
+                Sign Up
+              </button>
+            </p>
+          )}
+        </div>
         <form className={styles.form}>
-          <input className={styles.input} name="email" placeholder="Email" />
-          <input
-            className={styles.input}
-            name="password"
-            type="password"
-            placeholder="Password"
-          />
+          <div className={styles.inputWrapper}>
+            <span className={styles.inputIcon}>📧</span>
+            <input className={styles.input} name="email" placeholder="Email" />
+          </div>
+          <div className={styles.inputWrapper}>
+            <span className={styles.inputIcon}>🔒</span>
+            <input
+              className={styles.input}
+              name="password"
+              type="password"
+              placeholder="Password"
+            />
+          </div>
           <button className={styles.loginButton} type="submit">
             Login
           </button>

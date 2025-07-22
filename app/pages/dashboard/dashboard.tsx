@@ -4,11 +4,21 @@ import Capsule from "../../components/capsule/Capsule";
 import styles from "./dashboard.module.css";
 import CreateCapsule from "../../components/modals/CreateCapsule/CreateCapsule";
 import Login from "../../components/modals/auth/Login/Login";
+import Register from "../../components/modals/auth/Register/Register";
 
 const Dashboard = () => {
   const [isCreateCapsuleModalOpen, setIsCreateCapsuleModalOpen] =
     useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+
+  const handleSwitchToLogin = () => {
+    setIsLoginModalOpen(true);
+  };
+
+  const handleSwitchToRegister = () => {
+    setIsRegisterModalOpen(true);
+  };
 
   return (
     <div className={styles.dashboard}>
@@ -87,6 +97,12 @@ const Dashboard = () => {
       <Login
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
+        onSwitchToRegister={handleSwitchToRegister}
+      />
+      <Register
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
+        onSwitchToLogin={handleSwitchToLogin}
       />
     </div>
   );
