@@ -86,24 +86,6 @@
   color: #ffd700;
 }
 
-.countdown {
-  margin-top: 20px;
-}
-
-.countdownLabel {
-  display: block;
-  font-size: 14px;
-  margin-bottom: 8px;
-  color: white;
-}
-
-.countdownTime {
-  font-size: 24px;
-  font-weight: 600;
-  color: #ffd700;
-}
-
-/* Revealed Content Styles */
 .revealedContent {
   color: white;
 }

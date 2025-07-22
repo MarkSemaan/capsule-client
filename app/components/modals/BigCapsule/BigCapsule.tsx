@@ -25,7 +25,7 @@ interface BigCapsuleProps {
 
 const BigCapsule = ({ isOpen, onClose, capsule }: BigCapsuleProps) => {
   const { handleOverlayClick } = useModalClose({ isOpen, onClose });
-  const { formatDate, formatTimeRemaining } = useDateFormatter();
+  const { formatDate } = useDateFormatter();
 
   if (!isOpen || !capsule) return null;
 
@@ -51,12 +51,6 @@ const BigCapsule = ({ isOpen, onClose, capsule }: BigCapsuleProps) => {
                   {formatDate(capsule.reveal_date)}
                 </span>
               </p>
-              <div className={styles.countdown}>
-                <span className={styles.countdownLabel}>Time remaining:</span>
-                <span className={styles.countdownTime}>
-                  {formatTimeRemaining(capsule.reveal_date)}
-                </span>
-              </div>
             </div>
           ) : (
             <div className={styles.revealedContent}>
