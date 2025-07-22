@@ -4,12 +4,12 @@ import { Link } from "react-router";
 import badgePlus from "./badge-plus.svg";
 import badgeShare from "./share.svg";
 import badgeExplore from "./telescope.svg";
-import Login from "../../components/modals/auth/Login/Login";
+import Register from "../../components/modals/auth/Register/Register";
 
 type Props = {};
 
 const LandingPage = (props: Props) => {
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
   return (
     <main>
@@ -21,7 +21,7 @@ const LandingPage = (props: Props) => {
           <div>
             <button
               className={styles.signup}
-              onClick={() => setIsLoginModalOpen(true)}
+              onClick={() => setIsRegisterModalOpen(true)}
             >
               Sign Up
             </button>
@@ -62,9 +62,9 @@ const LandingPage = (props: Props) => {
           <p>Explore all the unique time capsules from around the world.</p>
         </div>
       </section>
-      <Login
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
+      <Register
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
       />
     </main>
   );

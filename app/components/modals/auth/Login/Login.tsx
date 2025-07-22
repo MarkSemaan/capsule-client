@@ -16,7 +16,6 @@ const Login = ({ isOpen, onClose }: loginProps) => {
 
     if (isOpen) {
       document.addEventListener("keydown", handleEscape);
-      // Prevent body scroll when modal is open
       document.body.style.overflow = "hidden";
     }
 
