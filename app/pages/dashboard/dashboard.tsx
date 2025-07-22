@@ -3,14 +3,16 @@ import Sidebar from "../../components/layout/sidebar/sidebar";
 import Capsule from "../../components/capsule/Capsule";
 import styles from "./dashboard.module.css";
 import CreateCapsule from "../../components/modals/CreateCapsule/CreateCapsule";
+import Login from "../../components/modals/auth/Login/Login";
 
 const Dashboard = () => {
   const [isCreateCapsuleModalOpen, setIsCreateCapsuleModalOpen] =
     useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   return (
     <div className={styles.dashboard}>
-      <Sidebar />
+      <Sidebar onLoginClick={() => setIsLoginModalOpen(true)} />
       <main className={styles.mainContent}>
         <div className={styles.topBar}>
           <h1 className={styles.title}>Capsule Wall</h1>
@@ -81,6 +83,10 @@ const Dashboard = () => {
       <CreateCapsule
         isOpen={isCreateCapsuleModalOpen}
         onClose={() => setIsCreateCapsuleModalOpen(false)}
+      />
+      <Login
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
       />
     </div>
   );

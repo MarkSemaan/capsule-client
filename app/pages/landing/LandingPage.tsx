@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./LandingPage.module.css";
 import { Link } from "react-router";
 import badgePlus from "./badge-plus.svg";
 import badgeShare from "./share.svg";
 import badgeExplore from "./telescope.svg";
+import Login from "../../components/modals/auth/Login/Login";
 
 type Props = {};
 
 const LandingPage = (props: Props) => {
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
   return (
     <main>
       <header>
@@ -16,9 +19,12 @@ const LandingPage = (props: Props) => {
             <Link to="/">Time Capsule</Link>
           </div>
           <div>
-            <Link to="/signup" className={styles.signup}>
+            <button
+              className={styles.signup}
+              onClick={() => setIsLoginModalOpen(true)}
+            >
               Sign Up
-            </Link>
+            </button>
           </div>
         </div>
       </header>
@@ -56,6 +62,10 @@ const LandingPage = (props: Props) => {
           <p>Explore all the unique time capsules from around the world.</p>
         </div>
       </section>
+      <Login
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
     </main>
   );
 };

@@ -2,9 +2,11 @@ import React from "react";
 import styles from "./sidebar.module.css";
 import { Link } from "react-router";
 
-type Props = {};
+interface SidebarProps {
+  onLoginClick: () => void;
+}
 
-const Sidebar = (props: Props) => {
+const Sidebar = ({ onLoginClick }: SidebarProps) => {
   return (
     <div className={styles.sidebarContainer}>
       <nav className={styles.sidebar}>
@@ -19,7 +21,9 @@ const Sidebar = (props: Props) => {
           <Link to="/dashboard/my-capsules">My Capsules</Link>
         </div>
         <div className={styles.sidebarFooter}>
-          <button className={styles.logoutButton}>Log Out</button>
+          <button className={styles.authButton} onClick={onLoginClick}>
+            Log In
+          </button>
         </div>
       </nav>
     </div>
