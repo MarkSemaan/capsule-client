@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./Login.module.css";
+import { useModalClose } from "../../../../hooks/useModalClose";
+import { useModalSwitch } from "../../../../hooks/useModalSwitch";
 
 interface loginProps {
   isOpen: boolean;
@@ -8,38 +10,14 @@ interface loginProps {
 }
 
 const Login = ({ isOpen, onClose, onSwitchToRegister }: loginProps) => {
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
-      document.body.style.overflow = "hidden";
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen, onClose]);
+  const { handleOverlayClick } = useModalClose({ isOpen, onClose });
+  const { handleSwitch } = useModalSwitch({ onSwitchTo: onSwitchToRegister });
 
   if (!isOpen) return null;
 
-  const handleOverlayClick = (event: React.MouseEvent) => {
-    if (event.target === event.currentTarget) {
-      onClose();
-    }
-  };
-
   const handleSwitchToRegister = (e: React.MouseEvent) => {
-    e.preventDefault();
+    handleSwitch(e);
     onClose();
-    if (onSwitchToRegister) {
-      onSwitchToRegister();
-    }
   };
 
   return (

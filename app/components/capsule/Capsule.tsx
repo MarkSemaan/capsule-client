@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Capsule.module.css";
+import { useDateFormatter } from "../../hooks/useDateFormatter";
 
 type Props = {
   title: string;
@@ -15,6 +16,8 @@ type Props = {
 };
 
 const Capsule = (props: Props) => {
+  const { formatShortDate } = useDateFormatter();
+
   const handleClick = () => {
     if (props.onCapsuleClick) {
       props.onCapsuleClick(props);
@@ -58,7 +61,7 @@ const Capsule = (props: Props) => {
           <span className={styles.tag}>{props.tag}</span>
           <div className={styles.date}>
             <span className={styles.calendarIcon}>📅</span>
-            <span>{props.date.toLocaleDateString()}</span>
+            <span>{formatShortDate(props.date)}</span>
           </div>
           <div className={styles.location}>
             <span className={styles.locationIcon}>📍</span>

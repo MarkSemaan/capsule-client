@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./BigCapsule.module.css";
+import { useModalClose } from "../../../hooks/useModalClose";
+import { useDateFormatter } from "../../../hooks/useDateFormatter";
 
 interface CapsuleData {
   title: string;
@@ -22,41 +24,10 @@ interface BigCapsuleProps {
 }
 
 const BigCapsule = ({ isOpen, onClose, capsule }: BigCapsuleProps) => {
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
-      document.body.style.overflow = "hidden";
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen, onClose]);
+  const { handleOverlayClick } = useModalClose({ isOpen, onClose });
+  const { formatDate, formatTimeRemaining } = useDateFormatter();
 
   if (!isOpen || !capsule) return null;
-
-  const handleOverlayClick = (event: React.MouseEvent) => {
-    if (event.target === event.currentTarget) {
-      onClose();
-    }
-  };
-
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   const isRevealTime = new Date() >= capsule.reveal_date;
 
@@ -83,8 +54,7 @@ const BigCapsule = ({ isOpen, onClose, capsule }: BigCapsuleProps) => {
               <div className={styles.countdown}>
                 <span className={styles.countdownLabel}>Time remaining:</span>
                 <span className={styles.countdownTime}>
-                  {/* TODO: Add countdown timer */}
-                  Coming soon...
+                  {formatTimeRemaining(capsule.reveal_date)}
                 </span>
               </div>
             </div>
