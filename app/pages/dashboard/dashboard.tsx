@@ -5,12 +5,31 @@ import styles from "./dashboard.module.css";
 import CreateCapsule from "../../components/modals/CreateCapsule/CreateCapsule";
 import Login from "../../components/modals/auth/Login/Login";
 import Register from "../../components/modals/auth/Register/Register";
+import BigCapsule from "../../components/modals/BigCapsule/BigCapsule";
+
+interface CapsuleData {
+  title: string;
+  avatar: string;
+  username: string;
+  content: string;
+  tag: string;
+  date: Date;
+  reveal_date: Date;
+  location: string;
+  isRevealed?: boolean;
+  mediaType?: "audio" | "image" | null;
+  mediaUrl?: string;
+}
 
 const Dashboard = () => {
   const [isCreateCapsuleModalOpen, setIsCreateCapsuleModalOpen] =
     useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [isBigCapsuleModalOpen, setIsBigCapsuleModalOpen] = useState(false);
+  const [selectedCapsule, setSelectedCapsule] = useState<CapsuleData | null>(
+    null
+  );
 
   const handleSwitchToLogin = () => {
     setIsLoginModalOpen(true);
@@ -18,6 +37,16 @@ const Dashboard = () => {
 
   const handleSwitchToRegister = () => {
     setIsRegisterModalOpen(true);
+  };
+
+  const handleCapsuleClick = (capsule: CapsuleData) => {
+    setSelectedCapsule(capsule);
+    setIsBigCapsuleModalOpen(true);
+  };
+
+  const handleCloseBigCapsule = () => {
+    setIsBigCapsuleModalOpen(false);
+    setSelectedCapsule(null);
   };
 
   return (
@@ -52,6 +81,7 @@ const Dashboard = () => {
             reveal_date={new Date()}
             isRevealed={true}
             location="SE Factory"
+            onCapsuleClick={handleCapsuleClick}
           />
           <Capsule
             title="Learning React"
@@ -63,6 +93,7 @@ const Dashboard = () => {
             reveal_date={new Date()}
             isRevealed={true}
             location="SE Factory"
+            onCapsuleClick={handleCapsuleClick}
           />
 
           {/* Hidden */}
@@ -73,9 +104,10 @@ const Dashboard = () => {
             content="This is a hidden capsule that needs to be revealed."
             tag="Personal"
             date={new Date()}
-            reveal_date={new Date()}
+            reveal_date={new Date(Date.now() + 86400000)} // Tomorrow
             isRevealed={false}
             location="SE Factory"
+            onCapsuleClick={handleCapsuleClick}
           />
           <Capsule
             title="Private notes"
@@ -84,9 +116,10 @@ const Dashboard = () => {
             content="These are my private thoughts and feelings."
             tag="Private"
             date={new Date()}
-            reveal_date={new Date()}
+            reveal_date={new Date(Date.now() + 172800000)} // Day after tomorrow
             isRevealed={false}
             location="SE Factory"
+            onCapsuleClick={handleCapsuleClick}
           />
         </div>
       </main>
@@ -103,6 +136,11 @@ const Dashboard = () => {
         isOpen={isRegisterModalOpen}
         onClose={() => setIsRegisterModalOpen(false)}
         onSwitchToLogin={handleSwitchToLogin}
+      />
+      <BigCapsule
+        isOpen={isBigCapsuleModalOpen}
+        onClose={handleCloseBigCapsule}
+        capsule={selectedCapsule}
       />
     </div>
   );

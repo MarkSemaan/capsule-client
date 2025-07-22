@@ -11,13 +11,23 @@ type Props = {
   reveal_date: Date;
   location: string;
   isRevealed?: boolean;
+  onCapsuleClick?: (capsule: Props) => void;
 };
 
 const Capsule = (props: Props) => {
+  const handleClick = () => {
+    if (props.onCapsuleClick) {
+      props.onCapsuleClick(props);
+    }
+  };
+
   if (!props.isRevealed) {
     return (
       <div className={styles.capsuleContainer}>
-        <div className={`${styles.capsule} ${styles.hidden}`}>
+        <div
+          className={`${styles.capsule} ${styles.hidden}`}
+          onClick={handleClick}
+        >
           <div className={styles.hiddenContent}>
             <div className={styles.hiddenIcon}>🔒</div>
             <p>Locked</p>
@@ -29,7 +39,7 @@ const Capsule = (props: Props) => {
 
   return (
     <div className={styles.capsuleContainer}>
-      <div className={styles.capsule}>
+      <div className={styles.capsule} onClick={handleClick}>
         <div className={styles.header}>
           <div className={styles.avatar}>
             <img src={props.avatar} alt="Avatar" />
