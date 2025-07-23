@@ -3,15 +3,23 @@ import styles from "./Capsule.module.css";
 import { useDateFormatter } from "../../hooks/useDateFormatter";
 
 type Props = {
-  title: string;
-  avatar: string;
-  username: string;
-  content: string;
-  tag: string;
-  date: Date;
-  reveal_date: Date;
-  location: string;
+  id: number;
+  title?: string;
+  avatar?: string;
+  username?: string;
+  content?: string;
+  message: string;
+  tag?: string;
+  tags?: Array<{ id: number; name: string }>;
+  date?: Date;
+  created_at: string;
+  reveal_date: string;
+  location?: string;
+  privacy: string;
+  surprise_mode: boolean;
   isRevealed?: boolean;
+  capsuleMedia?: Array<{ id: number; type: string; content: string }>;
+  user?: { id: number; name: string; email: string };
   onCapsuleClick?: (capsule: Props) => void;
 };
 
@@ -48,24 +56,58 @@ const Capsule = (props: Props) => {
             <img src={props.avatar} alt="Avatar" />
           </div>
           <div className={styles.userInfo}>
-            <h3 className={styles.title}>{props.title}</h3>
-            <p className={styles.username}>{props.username}</p>
+            <h3 className={styles.title}>
+              {props.title ||
+                (props.message && props.message.length > 30
+                  ? props.message.substring(0, 30) + "..."
+                  : props.message) ||
+                "Untitled"}
+            </h3>
+            <p className={styles.username}>
+              {props.username || props.user?.name || "Anonymous"}
+            </p>
           </div>
         </div>
 
         <div className={styles.content}>
-          <p>{props.content}</p>
+          <div className={styles.contentText}>
+            <p>{props.message}</p>
+          </div>
+          {props.capsuleMedia && props.capsuleMedia.length > 0 && (
+            <div className={styles.mediaPreview}>
+              {props.capsuleMedia[0].type === "image" ? (
+                <img
+                  src={`data:image/png;base64,${props.capsuleMedia[0].content}`}
+                  alt="Capsule media"
+                  className={styles.mediaThumbnail}
+                  onError={(e) => {
+                    // Fallback to JPEG if PNG fails
+                    const target = e.target as HTMLImageElement;
+                    if (props.capsuleMedia && props.capsuleMedia[0]) {
+                      target.src = `data:image/jpeg;base64,${props.capsuleMedia[0].content}`;
+                    }
+                  }}
+                />
+              ) : props.capsuleMedia[0].type === "audio" ? (
+                <div className={styles.audioPreview}>
+                  <span>♪</span>
+                </div>
+              ) : null}
+            </div>
+          )}
         </div>
 
         <div className={styles.footer}>
-          <span className={styles.tag}>{props.tag}</span>
+          <span className={styles.tag}>
+            {props.tag || props.tags?.[0]?.name || "No tag"}
+          </span>
           <div className={styles.date}>
             <span className={styles.calendarIcon}>📅</span>
-            <span>{formatShortDate(props.date)}</span>
+            <span>{formatShortDate(new Date(props.created_at))}</span>
           </div>
           <div className={styles.location}>
             <span className={styles.locationIcon}>📍</span>
-            <span>{props.location}</span>
+            <span>{props.location || "Unknown location"}</span>
           </div>
         </div>
       </div>

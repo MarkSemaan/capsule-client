@@ -4,22 +4,12 @@ import { Link } from "react-router";
 import badgePlus from "./badge-plus.svg";
 import badgeShare from "./share.svg";
 import badgeExplore from "./telescope.svg";
-import Register from "../../components/modals/auth/Register/Register";
 import Login from "../../components/modals/auth/Login/Login";
 
 type Props = {};
 
 const LandingPage = (props: Props) => {
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-
-  const handleSwitchToLogin = () => {
-    setIsLoginModalOpen(true);
-  };
-
-  const handleSwitchToRegister = () => {
-    setIsRegisterModalOpen(true);
-  };
 
   return (
     <main>
@@ -27,14 +17,6 @@ const LandingPage = (props: Props) => {
         <div className={styles.navbar}>
           <div className={styles.title}>
             <Link to="/">Time Capsule</Link>
-          </div>
-          <div>
-            <button
-              className={styles.signup}
-              onClick={() => setIsRegisterModalOpen(true)}
-            >
-              Sign Up
-            </button>
           </div>
         </div>
       </header>
@@ -72,15 +54,9 @@ const LandingPage = (props: Props) => {
           <p>Explore all the unique time capsules from around the world.</p>
         </div>
       </section>
-      <Register
-        isOpen={isRegisterModalOpen}
-        onClose={() => setIsRegisterModalOpen(false)}
-        onSwitchToLogin={handleSwitchToLogin}
-      />
       <Login
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
-        onSwitchToRegister={handleSwitchToRegister}
       />
     </main>
   );

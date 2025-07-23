@@ -146,3 +146,30 @@
     width: 100%;
   }
 }
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #666;
+}
+
+.error {
+  text-align: center;
+  padding: 40px;
+  color: #ff0000;
+  background-color: rgba(255, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+.emptyState p {
+  font-size: 18px;
+  margin: 0;
+}

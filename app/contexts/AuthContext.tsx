@@ -42,12 +42,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (email: string, password: string) => {
     try {
       const response = await authAPI.login({ email, password });
+      console.log("AuthContext login response:", response);
 
       // Store token and user data
-      localStorage.setItem("auth_token", response.data.authorization.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("auth_token", response.authorization.token);
+      localStorage.setItem("user", JSON.stringify(response.user));
 
-      setUser(response.data.user);
+      setUser(response.user);
     } catch (error) {
       console.error("Login error:", error);
       throw error;
@@ -57,12 +58,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const register = async (name: string, email: string, password: string) => {
     try {
       const response = await authAPI.register({ name, email, password });
+      console.log("AuthContext register response:", response);
 
       // Store token and user data
-      localStorage.setItem("auth_token", response.data.authorization.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("auth_token", response.authorization.token);
+      localStorage.setItem("user", JSON.stringify(response.user));
 
-      setUser(response.data.user);
+      setUser(response.user);
     } catch (error) {
       console.error("Register error:", error);
       throw error;
@@ -90,7 +92,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
 
       const response = await authAPI.me();
-      setUser(response.data.user);
+      console.log("AuthContext me response:", response);
+      setUser(response.user);
     } catch (error) {
       console.error("Auth check error:", error);
       // Clear invalid data

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../../components/layout/sidebar/sidebar";
 import Capsule from "../../components/capsule/Capsule";
 import styles from "./dashboard.module.css";
@@ -6,22 +6,33 @@ import CreateCapsule from "../../components/modals/CreateCapsule/CreateCapsule";
 import Login from "../../components/modals/auth/Login/Login";
 import Register from "../../components/modals/auth/Register/Register";
 import BigCapsule from "../../components/modals/BigCapsule/BigCapsule";
+import { capsuleAPI } from "../../services/api";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface CapsuleData {
-  title: string;
-  avatar: string;
-  username: string;
-  content: string;
-  tag: string;
-  date: Date;
-  reveal_date: Date;
-  location: string;
+  id: number;
+  title?: string;
+  avatar?: string;
+  username?: string;
+  content?: string;
+  message: string;
+  tag?: string;
+  tags?: Array<{ id: number; name: string }>;
+  date?: Date;
+  created_at: string;
+  reveal_date: string;
+  location?: string;
+  privacy: string;
+  surprise_mode: boolean;
   isRevealed?: boolean;
   mediaType?: "audio" | "image" | null;
   mediaUrl?: string;
+  capsuleMedia?: Array<{ id: number; type: string; content: string }>;
+  user?: { id: number; name: string; email: string };
 }
 
 const Dashboard = () => {
+  const { isAuthenticated } = useAuth();
   const [isCreateCapsuleModalOpen, setIsCreateCapsuleModalOpen] =
     useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -30,6 +41,9 @@ const Dashboard = () => {
   const [selectedCapsule, setSelectedCapsule] = useState<CapsuleData | null>(
     null
   );
+  const [capsules, setCapsules] = useState<CapsuleData[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSwitchToLogin = () => {
     setIsLoginModalOpen(true);
@@ -48,6 +62,31 @@ const Dashboard = () => {
     setIsBigCapsuleModalOpen(false);
     setSelectedCapsule(null);
   };
+
+  const loadCapsules = async () => {
+    if (!isAuthenticated) return;
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await capsuleAPI.getMyCapsules();
+      setCapsules(response);
+    } catch (error: any) {
+      console.error("Error loading capsules:", error);
+      setError("Failed to load capsules");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCapsuleCreated = (newCapsule: CapsuleData) => {
+    loadCapsules();
+  };
+
+  useEffect(() => {
+    loadCapsules();
+  }, [isAuthenticated]);
 
   return (
     <div className={styles.dashboard}>
@@ -70,62 +109,30 @@ const Dashboard = () => {
         </div>
 
         <div className={styles.capsuleGrid}>
-          {/* Revealed */}
-          <Capsule
-            title="Doing great!"
-            avatar="https://placehold.co/600x400"
-            username="Mark"
-            content="SE Factory is a great place to learn! Nothing wrong with the program at all!"
-            tag="SE Factory"
-            date={new Date()}
-            reveal_date={new Date()}
-            isRevealed={true}
-            location="SE Factory"
-            onCapsuleClick={handleCapsuleClick}
-          />
-          <Capsule
-            title="Learning React"
-            avatar="https://placehold.co/600x400"
-            username="Sarah"
-            content="React is amazing! Building components is so much fun."
-            tag="Programming"
-            date={new Date()}
-            reveal_date={new Date()}
-            isRevealed={true}
-            location="SE Factory"
-            onCapsuleClick={handleCapsuleClick}
-          />
-
-          {/* Hidden */}
-          <Capsule
-            title="Secret thoughts"
-            avatar="https://placehold.co/600x400"
-            username="Alex"
-            content="This is a hidden capsule that needs to be revealed."
-            tag="Personal"
-            date={new Date()}
-            reveal_date={new Date(Date.now() + 86400000)} // Tomorrow
-            isRevealed={false}
-            location="SE Factory"
-            onCapsuleClick={handleCapsuleClick}
-          />
-          <Capsule
-            title="Private notes"
-            avatar="https://placehold.co/600x400"
-            username="Emma"
-            content="These are my private thoughts and feelings."
-            tag="Private"
-            date={new Date()}
-            reveal_date={new Date(Date.now() + 172800000)} // Day after tomorrow
-            isRevealed={false}
-            location="SE Factory"
-            onCapsuleClick={handleCapsuleClick}
-          />
+          {isLoading ? (
+            <div className={styles.loading}>Loading capsules...</div>
+          ) : error ? (
+            <div className={styles.error}>{error}</div>
+          ) : capsules.length === 0 ? (
+            <div className={styles.emptyState}>
+              <p>No capsules yet. Create your first one!</p>
+            </div>
+          ) : (
+            capsules.map((capsule) => (
+              <Capsule
+                key={capsule.id}
+                {...capsule}
+                isRevealed={new Date() >= new Date(capsule.reveal_date)}
+                onCapsuleClick={handleCapsuleClick}
+              />
+            ))
+          )}
         </div>
       </main>
       <CreateCapsule
         isOpen={isCreateCapsuleModalOpen}
         onClose={() => setIsCreateCapsuleModalOpen(false)}
+        onSubmit={handleCapsuleCreated}
       />
       <Login
         isOpen={isLoginModalOpen}

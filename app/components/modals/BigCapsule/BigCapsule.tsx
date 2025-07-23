@@ -4,17 +4,25 @@ import { useModalClose } from "../../../hooks/useModalClose";
 import { useDateFormatter } from "../../../hooks/useDateFormatter";
 
 interface CapsuleData {
-  title: string;
-  avatar: string;
-  username: string;
-  content: string;
-  tag: string;
-  date: Date;
-  reveal_date: Date;
-  location: string;
+  id: number;
+  title?: string;
+  avatar?: string;
+  username?: string;
+  content?: string;
+  message: string;
+  tag?: string;
+  tags?: Array<{ id: number; name: string }>;
+  date?: Date;
+  created_at: string;
+  reveal_date: string;
+  location?: string;
+  privacy: string;
+  surprise_mode: boolean;
   isRevealed?: boolean;
   mediaType?: "audio" | "image" | null;
   mediaUrl?: string;
+  capsuleMedia?: Array<{ id: number; type: string; content: string }>;
+  user?: { id: number; name: string; email: string };
 }
 
 interface BigCapsuleProps {
@@ -29,7 +37,17 @@ const BigCapsule = ({ isOpen, onClose, capsule }: BigCapsuleProps) => {
 
   if (!isOpen || !capsule) return null;
 
-  const isRevealTime = new Date() >= capsule.reveal_date;
+  // Debug logging
+  console.log("BigCapsule received capsule data:", capsule);
+  if (capsule.capsuleMedia && capsule.capsuleMedia.length > 0) {
+    console.log("Capsule has media:", capsule.capsuleMedia[0]);
+    console.log(
+      "Media content length:",
+      capsule.capsuleMedia[0].content?.length
+    );
+  }
+
+  const isRevealTime = new Date() >= new Date(capsule.reveal_date);
 
   return (
     <div className={styles.modalOverlay} onClick={handleOverlayClick}>
@@ -48,7 +66,7 @@ const BigCapsule = ({ isOpen, onClose, capsule }: BigCapsuleProps) => {
               <p className={styles.lockedMessage}>
                 This capsule will be revealed on{" "}
                 <span className={styles.revealDate}>
-                  {formatDate(capsule.reveal_date)}
+                  {formatDate(new Date(capsule.reveal_date))}
                 </span>
               </p>
             </div>
@@ -63,27 +81,53 @@ const BigCapsule = ({ isOpen, onClose, capsule }: BigCapsuleProps) => {
                     />
                   </div>
                   <div className={styles.userInfo}>
-                    <h2 className={styles.title}>{capsule.title}</h2>
-                    <p className={styles.username}>by {capsule.username}</p>
+                    <h2 className={styles.title}>
+                      {capsule.title ||
+                        (capsule.message && capsule.message.length > 30
+                          ? capsule.message.substring(0, 30) + "..."
+                          : capsule.message) ||
+                        "Untitled"}
+                    </h2>
+                    <p className={styles.username}>
+                      by {capsule.username || capsule.user?.name || "Anonymous"}
+                    </p>
                   </div>
                 </div>
                 <div className={styles.tagSection}>
-                  <span className={styles.tag}>{capsule.tag}</span>
+                  <span className={styles.tag}>
+                    {capsule.tag || capsule.tags?.[0]?.name || "No tag"}
+                  </span>
                 </div>
               </div>
 
-              {capsule.mediaType && capsule.mediaUrl && (
+              {capsule.capsuleMedia && capsule.capsuleMedia.length > 0 && (
                 <div className={styles.mediaSection}>
-                  {capsule.mediaType === "image" ? (
+                  {capsule.capsuleMedia[0].type === "image" ? (
                     <img
-                      src={capsule.mediaUrl}
+                      src={`data:image/png;base64,${capsule.capsuleMedia[0].content}`}
                       alt="Capsule media"
                       className={styles.mediaImage}
+                      onLoad={() => {
+                        console.log("Image loaded successfully");
+                      }}
+                      onError={(e) => {
+                        console.log(
+                          "Image failed to load, trying JPEG fallback"
+                        );
+                        // Fallback to JPEG if PNG fails
+                        const target = e.target as HTMLImageElement;
+                        if (capsule.capsuleMedia && capsule.capsuleMedia[0]) {
+                          target.src = `data:image/jpeg;base64,${capsule.capsuleMedia[0].content}`;
+                        }
+                      }}
                     />
-                  ) : capsule.mediaType === "audio" ? (
+                  ) : capsule.capsuleMedia[0].type === "audio" ? (
                     <div className={styles.audioPlayer}>
                       <audio controls className={styles.audio}>
-                        <source src={capsule.mediaUrl} type="audio/mpeg" />
+                        <source
+                          src={`data:audio/mpeg;base64,${capsule.capsuleMedia[0].content}`}
+                          type="audio/mpeg"
+                        />
                         Your browser does not support the audio element.
                       </audio>
                     </div>
@@ -93,7 +137,7 @@ const BigCapsule = ({ isOpen, onClose, capsule }: BigCapsuleProps) => {
 
               <div className={styles.messageSection}>
                 <div className={styles.messageContent}>
-                  <p>{capsule.content}</p>
+                  <p>{capsule.message}</p>
                 </div>
               </div>
 
@@ -102,21 +146,21 @@ const BigCapsule = ({ isOpen, onClose, capsule }: BigCapsuleProps) => {
                   <span className={styles.metadataIcon}>📅</span>
                   <span className={styles.metadataLabel}>Created:</span>
                   <span className={styles.metadataValue}>
-                    {formatDate(capsule.date)}
+                    {formatDate(new Date(capsule.created_at))}
                   </span>
                 </div>
                 <div className={styles.metadataItem}>
                   <span className={styles.metadataIcon}>📍</span>
                   <span className={styles.metadataLabel}>Location:</span>
                   <span className={styles.metadataValue}>
-                    {capsule.location}
+                    {capsule.location || "Unknown location"}
                   </span>
                 </div>
                 <div className={styles.metadataItem}>
                   <span className={styles.metadataIcon}>🔓</span>
                   <span className={styles.metadataLabel}>Revealed:</span>
                   <span className={styles.metadataValue}>
-                    {formatDate(capsule.reveal_date)}
+                    {formatDate(new Date(capsule.reveal_date))}
                   </span>
                 </div>
               </div>
