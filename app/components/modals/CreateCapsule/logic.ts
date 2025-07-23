@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useCapsuleForm } from "../../../hooks/useCapsuleForm";
-import { useModalClose } from "../../../hooks/useModalClose";
+import { useEffect } from "react";
 import { capsuleAPI, mediaAPI, tagAPI } from "../../../services/api";
 import { useAuth } from "../../../contexts/AuthContext";
 
@@ -15,22 +14,81 @@ export const useCreateCapsuleLogic = ({
   onClose,
   onSubmit,
 }: CreateCapsuleProps) => {
-  const {
-    formData,
-    tagInput,
-    setTagInput,
-    handleInputChange,
-    handleTagInputKeyDown,
-    removeTag,
-    resetForm,
-  } = useCapsuleForm();
+  const [formData, setFormData] = useState({
+    message: "",
+    dateTime: "",
+    privacy: "Private",
+    tags: [] as string[],
+    surpriseMode: false,
+    mediaType: undefined as "audio" | "image" | undefined,
+  });
+
+  const [tagInput, setTagInput] = useState("");
+
+  const handleInputChange = (field: string, value: string | boolean) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleTagInputKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && tagInput.trim()) {
+      e.preventDefault();
+      if (!formData.tags.includes(tagInput.trim())) {
+        setFormData((prev) => ({
+          ...prev,
+          tags: [...prev.tags, tagInput.trim()],
+        }));
+      }
+      setTagInput("");
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      tags: prev.tags.filter((tag) => tag !== tagToRemove),
+    }));
+  };
+
+  const resetForm = () => {
+    setFormData({
+      message: "",
+      dateTime: "",
+      privacy: "Private",
+      tags: [] as string[],
+      surpriseMode: false,
+      mediaType: undefined,
+    });
+    setTagInput("");
+  };
 
   const { isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const { handleOverlayClick } = useModalClose({ isOpen, onClose });
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen, onClose]);
+
+  const handleOverlayClick = (event: React.MouseEvent) => {
+    if (event.target === event.currentTarget) {
+      onClose();
+    }
+  };
 
   const handleBackClick = () => {
     onClose();
