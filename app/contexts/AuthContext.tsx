@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = async (email: string, password: string) => {
     try {
       const response = await authAPI.login({ email, password });
-      console.log("Login success:", response.user.email);
+      console.log("Logged in as:", response.user.email);
 
       localStorage.setItem("auth_token", response.authorization.token);
       localStorage.setItem("user", JSON.stringify(response.user));
@@ -87,7 +87,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
 
       const response = await authAPI.me();
-      console.log("Auth check passed for:", response.user.email);
       setUser(response.user);
     } catch (error) {
       console.error("Auth check failed:", error);

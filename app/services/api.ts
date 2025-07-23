@@ -26,7 +26,7 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response) => {
-    console.log("API response received:", response.status, response.config.url);
+    console.log("Got response:", response.status, response.config.url);
     return response;
   },
   async (error) => {
@@ -48,15 +48,13 @@ api.interceptors.response.use(
 export const authAPI = {
   register: async (data: { name: string; email: string; password: string }) => {
     const response = await api.post("/register", data);
-    console.log("Register response:", response);
-    console.log("Register response.data:", response.data);
+    console.log("Registered user:", response);
     return response.data.data || response.data;
   },
 
   login: async (data: { email: string; password: string }) => {
     const response = await api.post("/login", data);
-    console.log("Login response:", response);
-    console.log("Login response.data:", response.data);
+    console.log("Logged in:", response);
     return response.data.data || response.data;
   },
 
