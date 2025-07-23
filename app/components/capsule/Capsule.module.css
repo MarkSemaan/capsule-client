@@ -1,0 +1,277 @@
+.capsule {
+  width: 240px;
+  height: 240px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.capsule:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease-in-out;
+}
+
+.capsule.hidden {
+  background-color: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.capsule.hidden:hover {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
+  transform: scale(1.02);
+}
+
+.hiddenContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.hiddenIcon {
+  font-size: 32px;
+  opacity: 0.6;
+}
+
+.hiddenContent p {
+  font-size: 14px;
+  color: #6c757d;
+  margin: 0;
+  font-weight: 500;
+}
+
+.capsuleContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #42a5f5;
+  border-radius: 50%;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarText {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.userInfo {
+  flex: 1;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 4px 0;
+  line-height: 1.2;
+}
+
+.username {
+  font-size: 14px;
+  color: #666666;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.content {
+  flex: 1;
+  margin-bottom: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.contentText {
+  flex: 1;
+  overflow: hidden;
+}
+
+.content p {
+  font-size: 13px;
+  color: #000000;
+  margin: 0;
+  line-height: 1.3;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mediaPreview {
+  flex-shrink: 0;
+}
+
+.mediaThumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  flex-shrink: 0;
+}
+
+.audioPreview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  font-size: 20px;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #666666;
+}
+
+.tag {
+  display: inline-block;
+  background-color: #f0f0f0;
+  color: #666666;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  align-self: flex-start;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #666666;
+}
+
+.calendarIcon {
+  font-size: 14px;
+}
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+  .capsule {
+    width: 220px;
+    height: 220px;
+    padding: 14px;
+  }
+
+  .title {
+    font-size: 15px;
+  }
+
+  .content p {
+    font-size: 15px;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .capsule {
+    width: 200px;
+    height: 200px;
+    padding: 12px;
+  }
+
+  .header {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+
+  .username {
+    font-size: 13px;
+  }
+
+  .content p {
+    font-size: 14px;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+
+  .date {
+    font-size: 11px;
+  }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+  .capsule {
+    width: 100%;
+    height: auto;
+    min-height: 180px;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .title {
+    font-size: 13px;
+  }
+
+  .username {
+    font-size: 12px;
+  }
+
+  .content p {
+    font-size: 13px;
+  }
+}
