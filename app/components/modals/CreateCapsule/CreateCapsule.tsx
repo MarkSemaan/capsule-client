@@ -1,11 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./CreateCapsule.module.css";
-import { useCapsuleForm } from "../../../hooks/useCapsuleForm";
-import { useModal } from "../../../hooks/useModal";
-import { useFileUpload } from "../../../hooks/useFileUpload";
-import { useModalClose } from "../../../hooks/useModalClose";
-import { capsuleAPI, mediaAPI, tagAPI } from "../../../services/api";
-import { useAuth } from "../../../contexts/AuthContext";
+import { useCreateCapsuleLogic } from "./logic";
 
 interface CreateCapsuleProps {
   isOpen: boolean;
@@ -21,134 +16,14 @@ const CreateCapsule = ({ isOpen, onClose, onSubmit }: CreateCapsuleProps) => {
     handleInputChange,
     handleTagInputKeyDown,
     removeTag,
-    resetForm,
-  } = useCapsuleForm();
-
-  const { isAuthenticated } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-  const { handleOverlayClick } = useModalClose({ isOpen, onClose });
-
-  const handleBackClick = () => {
-    onClose();
-  };
-
-  const handleAudioUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0]);
-      handleInputChange("mediaType", "audio");
-    }
-  };
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0]);
-      handleInputChange("mediaType", "image");
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!isAuthenticated) {
-      setError("Please log in to create a capsule");
-      return;
-    }
-
-    if (!formData.message.trim()) {
-      setError("Please enter a message");
-      return;
-    }
-
-    if (!formData.dateTime) {
-      setError("Please select a reveal date");
-      return;
-    }
-
-    setIsLoading(true);
-    setError("");
-
-    try {
-      // Create the capsule
-      const capsuleData = {
-        message: formData.message,
-        reveal_date: new Date(formData.dateTime).toISOString(),
-        privacy: formData.privacy.toLowerCase(),
-        surprise_mode: formData.surpriseMode,
-      };
-
-      const capsuleResponse = await capsuleAPI.create(capsuleData);
-      const capsuleId = capsuleResponse.id;
-
-      // Upload media if selected
-      if (selectedFile && capsuleId) {
-        console.log(
-          "Uploading media file:",
-          selectedFile.name,
-          "for capsule:",
-          capsuleId
-        );
-        try {
-          const mediaResponse = await mediaAPI.upload(capsuleId, selectedFile);
-          console.log("Media upload successful:", mediaResponse);
-        } catch (mediaError: any) {
-          console.error("Media upload failed:", mediaError.response?.data);
-          // Show specific error message to user
-          const errorMessage =
-            mediaError.response?.data?.message ||
-            mediaError.response?.data?.error ||
-            "Failed to upload media file";
-          setError(`Media upload error: ${errorMessage}`);
-          setIsLoading(false);
-          return; // Stop the process if media upload fails
-        }
-      }
-
-      // Create and attach tags
-      if (formData.tags.length > 0) {
-        for (const tagName of formData.tags) {
-          try {
-            let tagId: number;
-
-            // First try to find existing tag
-            try {
-              const existingTag = await tagAPI.findByName(tagName);
-              tagId = existingTag.id;
-            } catch (findError: any) {
-              // Tag doesn't exist, create it
-              const tagResponse = await tagAPI.create({ name: tagName });
-              tagId = tagResponse.id;
-            }
-
-            // Attach tag to capsule
-            await tagAPI.attachToCapsule(capsuleId, tagId);
-          } catch (tagError: any) {
-            console.error(`Error processing tag "${tagName}":`, tagError);
-          }
-        }
-      }
-
-      // Call the onSubmit callback if provided
-      if (onSubmit) {
-        onSubmit(capsuleResponse);
-      }
-
-      // Reset form and close modal
-      resetForm();
-      setSelectedFile(null);
-      onClose();
-    } catch (error: any) {
-      console.error("Error creating capsule:", error);
-      setError(
-        error.response?.data?.message ||
-          "Failed to create capsule. Please try again."
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    isLoading,
+    error,
+    handleOverlayClick,
+    handleBackClick,
+    handleAudioUpload,
+    handleImageUpload,
+    handleSubmit,
+  } = useCreateCapsuleLogic({ isOpen, onClose, onSubmit });
 
   if (!isOpen) return null;
 

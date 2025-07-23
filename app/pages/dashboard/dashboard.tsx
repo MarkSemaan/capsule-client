@@ -11,24 +11,16 @@ import { useAuth } from "../../contexts/AuthContext";
 
 interface CapsuleData {
   id: number;
-  title?: string;
-  avatar?: string;
-  username?: string;
-  content?: string;
   message: string;
-  tag?: string;
-  tags?: Array<{ id: number; name: string }>;
-  date?: Date;
   created_at: string;
   reveal_date: string;
   location?: string;
   privacy: string;
   surprise_mode: boolean;
   isRevealed?: boolean;
-  mediaType?: "audio" | "image" | null;
-  mediaUrl?: string;
   capsuleMedia?: Array<{ id: number; type: string; content: string }>;
   user?: { id: number; name: string; email: string };
+  tags?: Array<{ id: number; name: string }>;
 }
 
 const Dashboard = () => {
