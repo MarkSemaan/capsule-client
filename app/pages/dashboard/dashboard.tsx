@@ -64,13 +64,13 @@ const Dashboard = () => {
   };
 
   const loadCapsules = async () => {
-    if (!isAuthenticated) return;
-
     setIsLoading(true);
     setError("");
 
     try {
-      const response = await capsuleAPI.getMyCapsules();
+      const response = isAuthenticated
+        ? await capsuleAPI.getMyCapsules()
+        : await capsuleAPI.getPublicCapsules();
       setCapsules(response);
     } catch (error: any) {
       console.error("Error loading capsules:", error);
@@ -81,7 +81,9 @@ const Dashboard = () => {
   };
 
   const handleCapsuleCreated = (newCapsule: CapsuleData) => {
-    loadCapsules();
+    if (isAuthenticated) {
+      loadCapsules();
+    }
   };
 
   useEffect(() => {
@@ -93,14 +95,18 @@ const Dashboard = () => {
       <Sidebar onLoginClick={() => setIsLoginModalOpen(true)} />
       <main className={styles.mainContent}>
         <div className={styles.topBar}>
-          <h1 className={styles.title}>Capsule Wall</h1>
+          <h1 className={styles.title}>
+            {isAuthenticated ? "My Capsules" : "Public Capsules"}
+          </h1>
           <div className={styles.topBarRight}>
-            <button
-              className={styles.createButton}
-              onClick={() => setIsCreateCapsuleModalOpen(true)}
-            >
-              Create Capsule
-            </button>
+            {isAuthenticated && (
+              <button
+                className={styles.createButton}
+                onClick={() => setIsCreateCapsuleModalOpen(true)}
+              >
+                Create Capsule
+              </button>
+            )}
             <div className={styles.filter}>
               <span>Filter</span>
               <span className={styles.dropdownArrow}>▼</span>
@@ -115,7 +121,11 @@ const Dashboard = () => {
             <div className={styles.error}>{error}</div>
           ) : capsules.length === 0 ? (
             <div className={styles.emptyState}>
-              <p>No capsules yet. Create your first one!</p>
+              <p>
+                {isAuthenticated
+                  ? "No capsules yet. Create your first one!"
+                  : "No public capsules available at the moment."}
+              </p>
             </div>
           ) : (
             capsules.map((capsule) => (
