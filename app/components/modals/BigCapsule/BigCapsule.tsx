@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./BigCapsule.module.css";
-import { useModalClose } from "../../../hooks/useModalClose";
-import { useDateFormatter } from "../../../hooks/useDateFormatter";
+import { useBigCapsuleLogic } from "./logic";
 
 interface CapsuleData {
   id: number;
@@ -13,9 +12,8 @@ interface CapsuleData {
   surprise_mode: boolean;
   isRevealed?: boolean;
   capsuleMedia?: Array<{ id: number; type: string; content: string }>;
-  user?: { name: string; id: number; email: string };
+  user?: { id: number; name: string; email: string };
   tags?: Array<{ id: number; name: string }>;
-  onCapsuleClick?: (capsule: CapsuleData) => void;
 }
 
 interface BigCapsuleProps {
@@ -25,21 +23,13 @@ interface BigCapsuleProps {
 }
 
 const BigCapsule = ({ isOpen, onClose, capsule }: BigCapsuleProps) => {
-  const { handleOverlayClick } = useModalClose({ isOpen, onClose });
-  const { formatDate } = useDateFormatter();
+  const { handleOverlayClick, formatDate, isRevealTime } = useBigCapsuleLogic({
+    isOpen,
+    onClose,
+    capsule,
+  });
 
   if (!isOpen || !capsule) return null;
-
-  console.log("BigCapsule received capsule data:", capsule);
-  if (capsule.capsuleMedia && capsule.capsuleMedia.length > 0) {
-    console.log("Capsule has media:", capsule.capsuleMedia[0]);
-    console.log(
-      "Media content length:",
-      capsule.capsuleMedia[0].content?.length
-    );
-  }
-
-  const isRevealTime = new Date() >= new Date(capsule.reveal_date);
 
   return (
     <div className={styles.modalOverlay} onClick={handleOverlayClick}>
