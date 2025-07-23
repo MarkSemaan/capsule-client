@@ -135,7 +135,7 @@ export const capsuleAPI = {
 
   getRevealedCapsules: async () => {
     const response = await api.get("/public/revealed-capsules");
-    return response.data.data || response.data; // Just return as-is, frontend can handle it
+    return response.data.data || response.data;
   },
 
   getById: async (id: number) => {
