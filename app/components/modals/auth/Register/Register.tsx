@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Register.module.css";
-import { useModalClose } from "../../../../hooks/useModalClose";
-import { useModalSwitch } from "../../../../hooks/useModalSwitch";
-import { useAuth } from "../../../../contexts/AuthContext";
+import { useRegisterLogic } from "./logic";
 
 interface RegisterProps {
   isOpen: boolean;
@@ -11,57 +9,17 @@ interface RegisterProps {
 }
 
 const Register = ({ isOpen, onClose, onSwitchToLogin }: RegisterProps) => {
-  const { handleOverlayClick } = useModalClose({ isOpen, onClose });
-  const { handleSwitch } = useModalSwitch({ onSwitchTo: onSwitchToLogin });
-  const { register } = useAuth();
-
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const {
+    formData,
+    isLoading,
+    error,
+    handleOverlayClick,
+    handleSwitchToLogin,
+    handleInputChange,
+    handleSubmit,
+  } = useRegisterLogic({ isOpen, onClose, onSwitchToLogin });
 
   if (!isOpen) return null;
-
-  const handleSwitchToLogin = (e: React.MouseEvent) => {
-    handleSwitch(e);
-    onClose();
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError("");
-
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      await register(formData.name, formData.email, formData.password);
-      onClose();
-      setFormData({ name: "", email: "", password: "", confirmPassword: "" });
-    } catch (error: any) {
-      setError(
-        error.response?.data?.message ||
-          "Registration failed. Please try again."
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   return (
     <div className={styles.modalOverlay} onClick={handleOverlayClick}>

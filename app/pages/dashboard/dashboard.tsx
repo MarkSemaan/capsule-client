@@ -8,28 +8,7 @@ import Register from "../../components/modals/auth/Register/Register";
 import BigCapsule from "../../components/modals/BigCapsule/BigCapsule";
 import { capsuleAPI } from "../../services/api";
 import { useAuth } from "../../contexts/AuthContext";
-
-interface CapsuleData {
-  id: number;
-  title?: string;
-  avatar?: string;
-  username?: string;
-  content?: string;
-  message: string;
-  tag?: string;
-  tags?: Array<{ id: number; name: string }>;
-  date?: Date;
-  created_at: string;
-  reveal_date: string;
-  location?: string;
-  privacy: string;
-  surprise_mode: boolean;
-  isRevealed?: boolean;
-  mediaType?: "audio" | "image" | null;
-  mediaUrl?: string;
-  capsuleMedia?: Array<{ id: number; type: string; content: string }>;
-  user?: { id: number; name: string; email: string };
-}
+import type { CapsuleData } from "../../types/Capsule";
 
 const Dashboard = () => {
   const { isAuthenticated } = useAuth();
@@ -44,6 +23,7 @@ const Dashboard = () => {
   const [capsules, setCapsules] = useState<CapsuleData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [currentView, setCurrentView] = useState<"all" | "my">("all");
 
   const handleSwitchToLogin = () => {
     setIsLoginModalOpen(true);
@@ -68,9 +48,12 @@ const Dashboard = () => {
     setError("");
 
     try {
-      const response = isAuthenticated
-        ? await capsuleAPI.getMyCapsules()
-        : await capsuleAPI.getPublicCapsules();
+      let response;
+      if (currentView === "my" && isAuthenticated) {
+        response = await capsuleAPI.getMyCapsules();
+      } else {
+        response = await capsuleAPI.getPublicCapsules();
+      }
       setCapsules(response);
     } catch (error: any) {
       console.error("Error loading capsules:", error);
@@ -88,15 +71,26 @@ const Dashboard = () => {
 
   useEffect(() => {
     loadCapsules();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, currentView]);
 
   return (
     <div className={styles.dashboard}>
-      <Sidebar onLoginClick={() => setIsLoginModalOpen(true)} />
+      <Sidebar
+        onLoginClick={() => setIsLoginModalOpen(true)}
+        currentView={currentView}
+        onViewChange={(view) => {
+          setCurrentView(view);
+          // Auto-switch to "all" if user selects "my" but isn't authenticated
+          if (view === "my" && !isAuthenticated) {
+            setCurrentView("all");
+            setIsLoginModalOpen(true);
+          }
+        }}
+      />
       <main className={styles.mainContent}>
         <div className={styles.topBar}>
           <h1 className={styles.title}>
-            {isAuthenticated ? "My Capsules" : "Public Capsules"}
+            {currentView === "my" ? "My Capsules" : "All Capsules"}
           </h1>
           <div className={styles.topBarRight}>
             {isAuthenticated && (

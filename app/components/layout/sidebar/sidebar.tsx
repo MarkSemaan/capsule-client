@@ -5,9 +5,11 @@ import { useAuth } from "../../../contexts/AuthContext";
 
 interface SidebarProps {
   onLoginClick: () => void;
+  currentView: "all" | "my";
+  onViewChange: (view: "all" | "my") => void;
 }
 
-const Sidebar = ({ onLoginClick }: SidebarProps) => {
+const Sidebar = ({ onLoginClick, currentView, onViewChange }: SidebarProps) => {
   const { user, isAuthenticated, logout } = useAuth();
 
   const handleLogout = () => {
@@ -22,10 +24,19 @@ const Sidebar = ({ onLoginClick }: SidebarProps) => {
           <h2>{isAuthenticated ? user?.name : "Guest"}</h2>
         </div>
         <div className={styles.sidebarNav}>
-          <Link to="/dashboard/all-capsules" className={styles.active}>
+          <button
+            onClick={() => onViewChange("all")}
+            className={currentView === "all" ? styles.active : ""}
+          >
             All Capsules
-          </Link>
-          <Link to="/dashboard/my-capsules">My Capsules</Link>
+          </button>
+          <button
+            onClick={() => onViewChange("my")}
+            className={currentView === "my" ? styles.active : ""}
+            disabled={!isAuthenticated}
+          >
+            My Capsules
+          </button>
         </div>
         <div className={styles.sidebarFooter}>
           {isAuthenticated ? (

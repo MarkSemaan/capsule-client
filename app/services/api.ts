@@ -1,11 +1,9 @@
 import axios from "axios";
 
-// Create axios instance
 const api = axios.create({
   baseURL: "http://capsule-server.test/api", // Using Laragon pretty URL
 });
 
-// Request interceptor to add auth token and set content type
 api.interceptors.request.use(
   (config) => {
     console.log("Making API request to:", `${config.baseURL}${config.url}`);
@@ -14,7 +12,6 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // Set default content type to application/json unless it's already set
     if (!config.headers["Content-Type"] && !(config.data instanceof FormData)) {
       config.headers["Content-Type"] = "application/json";
     }
@@ -27,10 +24,9 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle token refresh
 api.interceptors.response.use(
   (response) => {
-    console.log("API response received:", response.status, response.config.url);
+    console.log("Got response:", response.status, response.config.url);
     return response;
   },
   async (error) => {
@@ -41,28 +37,23 @@ api.interceptors.response.use(
       error.config?.url
     );
     if (error.response?.status === 401) {
-      // Token expired or invalid
       localStorage.removeItem("auth_token");
       localStorage.removeItem("user");
-      window.location.href = "/";
     }
     return Promise.reject(error);
   }
 );
 
-// Auth API calls
 export const authAPI = {
   register: async (data: { name: string; email: string; password: string }) => {
     const response = await api.post("/register", data);
-    console.log("Register response:", response);
-    console.log("Register response.data:", response.data);
+    console.log("Registered user:", response);
     return response.data.data || response.data;
   },
 
   login: async (data: { email: string; password: string }) => {
     const response = await api.post("/login", data);
-    console.log("Login response:", response);
-    console.log("Login response.data:", response.data);
+    console.log("Logged in:", response);
     return response.data.data || response.data;
   },
 
@@ -82,7 +73,6 @@ export const authAPI = {
   },
 };
 
-// Capsule API calls
 export const capsuleAPI = {
   create: async (data: {
     message: string;
@@ -98,7 +88,6 @@ export const capsuleAPI = {
     const response = await api.get("/my-capsules");
     const capsules = response.data.data || response.data;
 
-    // Transform snake_case to camelCase
     return Array.isArray(capsules)
       ? capsules.map((capsule) => ({
           ...capsule,
@@ -110,16 +99,17 @@ export const capsuleAPI = {
 
   getUpcomingCapsules: async () => {
     const response = await api.get("/upcoming-capsules");
-    const capsules = response.data.data || response.data;
+    const data = response.data.data || response.data;
 
-    // Transform snake_case to camelCase
-    return Array.isArray(capsules)
-      ? capsules.map((capsule) => ({
-          ...capsule,
-          capsuleMedia: capsule.capsule_media || [],
-          capsule_media: undefined,
-        }))
-      : capsules;
+    if (!Array.isArray(data)) return data;
+
+    return data.map((item) => {
+      if (item.capsule_media) {
+        item.capsuleMedia = item.capsule_media;
+        delete item.capsule_media;
+      }
+      return item;
+    });
   },
 
   delete: async (id: number) => {
@@ -129,45 +119,33 @@ export const capsuleAPI = {
 
   getPublicCapsules: async () => {
     const response = await api.get("/public/public-capsules");
-    const capsules = response.data.data || response.data;
+    let capsules = response.data.data || response.data;
 
-    return Array.isArray(capsules)
-      ? capsules.map((capsule) => ({
-          ...capsule,
-          capsuleMedia: capsule.capsule_media || [],
-          capsule_media: undefined,
-        }))
-      : capsules;
+    if (Array.isArray(capsules)) {
+      capsules = capsules.map((c) => ({
+        ...c,
+        capsuleMedia: c.capsule_media || [],
+      }));
+    }
+    return capsules;
   },
 
   getRevealedCapsules: async () => {
     const response = await api.get("/public/revealed-capsules");
-    const capsules = response.data.data || response.data;
-
-    return Array.isArray(capsules)
-      ? capsules.map((capsule) => ({
-          ...capsule,
-          capsuleMedia: capsule.capsule_media || [],
-          capsule_media: undefined,
-        }))
-      : capsules;
+    return response.data.data || response.data;
   },
 
   getById: async (id: number) => {
     const response = await api.get(`/public/capsules/${id}`);
     const capsule = response.data.data || response.data;
 
-    return capsule.capsule_media
-      ? {
-          ...capsule,
-          capsuleMedia: capsule.capsule_media || [],
-          capsule_media: undefined,
-        }
-      : capsule;
+    if (capsule.capsule_media) {
+      capsule.capsuleMedia = capsule.capsule_media;
+    }
+    return capsule;
   },
 };
 
-// Media API calls
 export const mediaAPI = {
   upload: async (capsuleId: number, file: File) => {
     const formData = new FormData();
@@ -189,7 +167,6 @@ export const mediaAPI = {
   },
 };
 
-// Tag API calls
 export const tagAPI = {
   create: async (data: { name: string }) => {
     const response = await api.post("/tags", data);

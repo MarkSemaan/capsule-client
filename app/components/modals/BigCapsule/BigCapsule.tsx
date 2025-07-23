@@ -1,29 +1,7 @@
 import React from "react";
 import styles from "./BigCapsule.module.css";
-import { useModalClose } from "../../../hooks/useModalClose";
-import { useDateFormatter } from "../../../hooks/useDateFormatter";
-
-interface CapsuleData {
-  id: number;
-  title?: string;
-  avatar?: string;
-  username?: string;
-  content?: string;
-  message: string;
-  tag?: string;
-  tags?: Array<{ id: number; name: string }>;
-  date?: Date;
-  created_at: string;
-  reveal_date: string;
-  location?: string;
-  privacy: string;
-  surprise_mode: boolean;
-  isRevealed?: boolean;
-  mediaType?: "audio" | "image" | null;
-  mediaUrl?: string;
-  capsuleMedia?: Array<{ id: number; type: string; content: string }>;
-  user?: { id: number; name: string; email: string };
-}
+import { useBigCapsuleLogic } from "./logic";
+import type { CapsuleData } from "../../../types/Capsule";
 
 interface BigCapsuleProps {
   isOpen: boolean;
@@ -32,22 +10,13 @@ interface BigCapsuleProps {
 }
 
 const BigCapsule = ({ isOpen, onClose, capsule }: BigCapsuleProps) => {
-  const { handleOverlayClick } = useModalClose({ isOpen, onClose });
-  const { formatDate } = useDateFormatter();
+  const { handleOverlayClick, formatDate, isRevealTime } = useBigCapsuleLogic({
+    isOpen,
+    onClose,
+    capsule,
+  });
 
   if (!isOpen || !capsule) return null;
-
-  // Debug logging
-  console.log("BigCapsule received capsule data:", capsule);
-  if (capsule.capsuleMedia && capsule.capsuleMedia.length > 0) {
-    console.log("Capsule has media:", capsule.capsuleMedia[0]);
-    console.log(
-      "Media content length:",
-      capsule.capsuleMedia[0].content?.length
-    );
-  }
-
-  const isRevealTime = new Date() >= new Date(capsule.reveal_date);
 
   return (
     <div className={styles.modalOverlay} onClick={handleOverlayClick}>
@@ -76,27 +45,23 @@ const BigCapsule = ({ isOpen, onClose, capsule }: BigCapsuleProps) => {
                 <div className={styles.userSection}>
                   <div className={styles.avatar}>
                     <span className={styles.avatarText}>
-                      {(capsule.username ||
-                        capsule.user?.name ||
-                        "A")[0].toUpperCase()}
+                      {(capsule.user?.name || "A")[0].toUpperCase()}
                     </span>
                   </div>
                   <div className={styles.userInfo}>
                     <h2 className={styles.title}>
-                      {capsule.title ||
-                        (capsule.message && capsule.message.length > 30
-                          ? capsule.message.substring(0, 30) + "..."
-                          : capsule.message) ||
-                        "Untitled"}
+                      {capsule.message.length > 30
+                        ? capsule.message.substring(0, 30) + "..."
+                        : capsule.message}
                     </h2>
                     <p className={styles.username}>
-                      by {capsule.username || capsule.user?.name || "Anonymous"}
+                      by by {capsule.user?.name || "Anonymous"}
                     </p>
                   </div>
                 </div>
                 <div className={styles.tagSection}>
                   <span className={styles.tag}>
-                    {capsule.tag || capsule.tags?.[0]?.name || "No tag"}
+                    {capsule.tags?.[0]?.name || "No tag"}
                   </span>
                 </div>
               </div>
