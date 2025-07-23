@@ -8,20 +8,7 @@ import Register from "../../components/modals/auth/Register/Register";
 import BigCapsule from "../../components/modals/BigCapsule/BigCapsule";
 import { capsuleAPI } from "../../services/api";
 import { useAuth } from "../../contexts/AuthContext";
-
-interface CapsuleData {
-  id: number;
-  message: string;
-  created_at: string;
-  reveal_date: string;
-  location?: string;
-  privacy: string;
-  surprise_mode: boolean;
-  isRevealed?: boolean;
-  capsuleMedia?: Array<{ id: number; type: string; content: string }>;
-  user?: { id: number; name: string; email: string };
-  tags?: Array<{ id: number; name: string }>;
-}
+import type { CapsuleData } from "../../types/Capsule";
 
 const Dashboard = () => {
   const { isAuthenticated } = useAuth();

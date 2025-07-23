@@ -1,20 +1,7 @@
 import React from "react";
 import styles from "./BigCapsule.module.css";
 import { useBigCapsuleLogic } from "./logic";
-
-interface CapsuleData {
-  id: number;
-  message: string;
-  created_at: string;
-  reveal_date: string;
-  location?: string;
-  privacy: string;
-  surprise_mode: boolean;
-  isRevealed?: boolean;
-  capsuleMedia?: Array<{ id: number; type: string; content: string }>;
-  user?: { id: number; name: string; email: string };
-  tags?: Array<{ id: number; name: string }>;
-}
+import type { CapsuleData } from "../../../types/Capsule";
 
 interface BigCapsuleProps {
   isOpen: boolean;
