@@ -23,6 +23,7 @@ const Dashboard = () => {
   const [capsules, setCapsules] = useState<CapsuleData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [currentView, setCurrentView] = useState<"all" | "my">("all");
 
   const handleSwitchToLogin = () => {
     setIsLoginModalOpen(true);
@@ -47,9 +48,12 @@ const Dashboard = () => {
     setError("");
 
     try {
-      const response = isAuthenticated
-        ? await capsuleAPI.getMyCapsules()
-        : await capsuleAPI.getPublicCapsules();
+      let response;
+      if (currentView === "my" && isAuthenticated) {
+        response = await capsuleAPI.getMyCapsules();
+      } else {
+        response = await capsuleAPI.getPublicCapsules();
+      }
       setCapsules(response);
     } catch (error: any) {
       console.error("Error loading capsules:", error);
@@ -67,15 +71,26 @@ const Dashboard = () => {
 
   useEffect(() => {
     loadCapsules();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, currentView]);
 
   return (
     <div className={styles.dashboard}>
-      <Sidebar onLoginClick={() => setIsLoginModalOpen(true)} />
+      <Sidebar
+        onLoginClick={() => setIsLoginModalOpen(true)}
+        currentView={currentView}
+        onViewChange={(view) => {
+          setCurrentView(view);
+          // Auto-switch to "all" if user selects "my" but isn't authenticated
+          if (view === "my" && !isAuthenticated) {
+            setCurrentView("all");
+            setIsLoginModalOpen(true);
+          }
+        }}
+      />
       <main className={styles.mainContent}>
         <div className={styles.topBar}>
           <h1 className={styles.title}>
-            {isAuthenticated ? "My Capsules" : "Public Capsules"}
+            {currentView === "my" ? "My Capsules" : "All Capsules"}
           </h1>
           <div className={styles.topBarRight}>
             {isAuthenticated && (
