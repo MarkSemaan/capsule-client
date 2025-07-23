@@ -75,10 +75,11 @@ const BigCapsule = ({ isOpen, onClose, capsule }: BigCapsuleProps) => {
               <div className={styles.capsuleHeader}>
                 <div className={styles.userSection}>
                   <div className={styles.avatar}>
-                    <img
-                      src={capsule.avatar}
-                      alt={`${capsule.username}'s avatar`}
-                    />
+                    <span className={styles.avatarText}>
+                      {(capsule.username ||
+                        capsule.user?.name ||
+                        "A")[0].toUpperCase()}
+                    </span>
                   </div>
                   <div className={styles.userInfo}>
                     <h2 className={styles.title}>

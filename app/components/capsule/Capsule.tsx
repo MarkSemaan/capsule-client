@@ -53,7 +53,9 @@ const Capsule = (props: Props) => {
       <div className={styles.capsule} onClick={handleClick}>
         <div className={styles.header}>
           <div className={styles.avatar}>
-            <img src={props.avatar} alt="Avatar" />
+            <span className={styles.avatarText}>
+              {(props.username || props.user?.name || "A")[0].toUpperCase()}
+            </span>
           </div>
           <div className={styles.userInfo}>
             <h3 className={styles.title}>
