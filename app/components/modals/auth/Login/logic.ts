@@ -14,7 +14,6 @@ export const useLoginLogic = ({
 }: LoginLogicProps) => {
   const { login } = useAuth();
 
-  // Form state
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -22,7 +21,6 @@ export const useLoginLogic = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Modal close logic (from useModalClose)
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
